@@ -1,0 +1,45 @@
+/* Watermark fix - ensure it doesn't block content */
+#watermark {
+    position: fixed !important;
+    bottom: 15px !important;
+    right: 15px !important;
+    font-size: 11px !important;
+    color: rgba(255, 255, 255, 0.15) !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+    white-space: nowrap !important;
+    font-weight: 500 !important;
+    user-select: none !important;
+    background: rgba(0, 0, 0, 0.1) !important;
+    padding: 4px 8px !important;
+    border-radius: 4px !important;
+    backdrop-filter: blur(2px) !important;
+    font-family: 'Inter', monospace !important;
+    transform: none !important;
+    top: auto !important;
+    left: auto !important;
+}
+
+/* Ensure content is above watermark */
+.question-container,
+.question-content,
+.option-label,
+.nav-btn,
+.exam-header,
+.exam-card {
+    position: relative;
+    z-index: 10;
+}
+
+.question-content h2,
+.options {
+    position: relative;
+    z-index: 11;
+}
+
+/* Sync status positioning - make sure it doesn't overlap with watermark */
+#syncStatus {
+    bottom: 60px !important;
+    right: 15px !important;
+}
+

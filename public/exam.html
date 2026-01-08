@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian - Sistem Ujian</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/anticheat.css">
+    <link rel="stylesheet" href="assets/css/watermark-fix.css">
+    <link rel="stylesheet" href="assets/css/particles.css">
+</head>
+<body>
+    <div class="exam-header fade-in">
+        <div class="exam-info">
+            <span id="examTitle">Ujian Online</span>
+        </div>
+        <div class="timer-container pulse-animation">
+            <span id="timer">00:00:00</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="exam-card fade-in">
+            <div class="particle-container">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="orb-particle"></div>
+                <div class="orb-particle"></div>
+            </div>
+            <div class="question-counter fade-in-delay">
+                <span id="questionNumber">1</span> / <span id="totalQuestions">0</span>
+            </div>
+            
+            <div id="questionContainer" class="question-container scale-up">
+                <div id="questionContent">
+                    <p class="loading-text">Memuat soal...</p>
+                </div>
+            </div>
+            
+            <div class="exam-controls fade-in-delay-2">
+                <button id="prevBtn" class="btn btn-secondary slide-left" onclick="prevSoal()">Sebelumnya</button>
+                <button id="nextBtn" class="btn btn-primary slide-right" onclick="nextSoal()">Selanjutnya</button>
+                <button id="finishBtn" class="btn btn-danger glow-on-hover" onclick="finishExam()" style="display:none;">Selesai</button>
+            </div>
+        </div>
+        
+        <div class="question-navigation fade-in-delay-3">
+            <div class="particle-container">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
+            <h3>Navigasi Soal</h3>
+            <div id="questionNav" class="question-nav-grid"></div>
+        </div>
+    </div>
+    
+    <div id="violationWarning" class="violation-warning" style="display:none;"></div>
+    
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/anticheat.js"></script>
+    <script src="assets/js/exam.js"></script>
+</body>
+</html>
+

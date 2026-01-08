@@ -1,0 +1,29 @@
+{
+  "name": "sistem-ujian-online",
+  "version": "1.0.0",
+  "description": "Sistem Ujian Online Berbasis Web Full Local",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "start:lan": "node backend/server.js --host 0.0.0.0",
+    "dev": "nodemon backend/server.js"
+  },
+  "keywords": [
+    "ujian",
+    "exam",
+    "online",
+    "local",
+    "sqlite"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6",
+    "ws": "^8.19.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

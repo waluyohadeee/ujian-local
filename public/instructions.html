@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petunjuk Ujian - Sistem Ujian</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/particles.css">
+</head>
+<body class="fade-in">
+    <div class="container">
+        <div class="instructions-card scale-up">
+            <div class="particle-container">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="orb-particle"></div>
+                <div class="orb-particle"></div>
+            </div>
+            <h1 class="fade-in-delay">Petunjuk Ujian</h1>
+            <div class="instructions-content fade-in-delay-2">
+                <ol>
+                    <li>Bacalah setiap soal dengan teliti sebelum menjawab.</li>
+                    <li>Anda dapat berpindah antar soal menggunakan tombol <strong>Sebelumnya</strong> dan <strong>Selanjutnya</strong>.</li>
+                    <li>Jawaban akan tersimpan otomatis saat Anda memilih opsi.</li>
+                    <li>Waktu ujian akan ditampilkan di pojok kanan atas.</li>
+                    <li>Setelah selesai, klik tombol <strong>Selesai</strong> untuk melihat hasil.</li>
+                    <li>Pastikan semua soal telah dijawab sebelum menyelesaikan ujian.</li>
+                </ol>
+                <div class="warning-box">
+                    <p><strong>⚠️ Peringatan:</strong> Jangan me-refresh halaman selama ujian berlangsung!</p>
+                </div>
+            </div>
+            <div class="button-group fade-in-delay-3">
+                <button class="btn btn-secondary" onclick="window.location.href='login.html'">Kembali</button>
+                <button class="btn btn-primary floating-btn glow-on-hover" onclick="startExam()">Mulai Ujian</button>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/app.js"></script>
+    <script>
+        function startExam() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                alert('Silakan login terlebih dahulu');
+                window.location.href = 'login.html';
+                return;
+            }
+            window.location.href = 'exam.html';
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Ujian - Sistem Ujian</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/particles.css">
+</head>
+<body class="fade-in">
+    <div class="container">
+        <div class="result-card scale-up">
+            <div class="particle-container">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="orb-particle"></div>
+                <div class="orb-particle"></div>
+                <div class="orb-particle"></div>
+            </div>
+            <div class="result-header fade-in-delay">
+                <h1>Hasil Ujian</h1>
+                <p id="studentName">-</p>
+            </div>
+            
+            <div class="score-container fade-in-delay-2">
+                <div class="score-circle">
+                    <svg class="progress-ring" width="200" height="200">
+                        <defs>
+                            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#7F7FD5;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#86A8E7;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#91EAE4;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle class="progress-ring-circle-bg" cx="100" cy="100" r="90"></circle>
+                        <circle class="progress-ring-circle" id="progressCircle" cx="100" cy="100" r="90"></circle>
+                    </svg>
+                    <div class="score-text">
+                        <span id="scoreDisplay">0</span>
+                        <span class="score-percent">%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="result-details fade-in-delay-3">
+                <div class="detail-item">
+                    <span class="detail-label">Jawaban Benar:</span>
+                    <span class="detail-value" id="benarCount">0</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Total Soal:</span>
+                    <span class="detail-value" id="totalCount">0</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Waktu Mulai:</span>
+                    <span class="detail-value" id="startTime">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Waktu Selesai:</span>
+                    <span class="detail-value" id="endTime">-</span>
+                </div>
+            </div>
+            
+            <div class="result-message fade-in-delay-3" id="resultMessage"></div>
+            
+            <div class="button-group fade-in-delay-3">
+                <button class="btn btn-secondary" onclick="window.location.href='login.html'">Keluar</button>
+                <button class="btn btn-primary glow-on-hover" onclick="window.location.href='instructions.html'">Ujian Lagi</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="assets/js/app.js"></script>
+    <script>
+        async function loadResult() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/ujian/hasil?user_id=${user.id}`);
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    const data = result.data;
+                    document.getElementById('studentName').textContent = data.user ? data.user.nama : '-';
+                    document.getElementById('benarCount').textContent = data.benar || 0;
+                    document.getElementById('totalCount').textContent = data.total || 0;
+                    document.getElementById('startTime').textContent = new Date(data.waktu_mulai).toLocaleString('id-ID');
+                    document.getElementById('endTime').textContent = new Date(data.waktu_selesai).toLocaleString('id-ID');
+                    
+                    // Animate score
+                    const score = data.nilai || 0;
+                    animateScore(score);
+                    
+                    // Set progress ring
+                    const circumference = 2 * Math.PI * 90;
+                    const progressCircle = document.getElementById('progressCircle');
+                    progressCircle.style.strokeDasharray = circumference;
+                    progressCircle.style.strokeDashoffset = circumference;
+                    
+                    setTimeout(() => {
+                        // Animate progress circle with dynamic effect
+                        let currentOffset = circumference;
+                        const targetOffset = circumference - (score / 100) * circumference;
+                        const duration = 2000; // 2 seconds
+                        const startTime = Date.now();
+                        
+                        function animateProgress() {
+                            const elapsed = Date.now() - startTime;
+                            const progress = Math.min(elapsed / duration, 1);
+                            
+                            // Easing function (ease-out)
+                            const easeOut = 1 - Math.pow(1 - progress, 3);
+                            currentOffset = circumference - (easeOut * (circumference - targetOffset));
+                            
+                            progressCircle.style.strokeDashoffset = currentOffset;
+                            
+                            // Add dynamic glow effect during animation
+                            const glowIntensity = Math.sin(progress * Math.PI * 4) * 0.5 + 0.5;
+                            progressCircle.style.filter = `drop-shadow(0 0 ${8 + glowIntensity * 10}px rgba(67, 217, 173, ${0.8 + glowIntensity * 0.2}))`;
+                            
+                            if (progress < 1) {
+                                requestAnimationFrame(animateProgress);
+                            } else {
+                                // Final state
+                                progressCircle.style.filter = 'drop-shadow(0 0 12px rgba(67, 217, 173, 0.9))';
+                            }
+                        }
+                        
+                        animateProgress();
+                    }, 300);
+                    
+                    // Result message
+                    const messageEl = document.getElementById('resultMessage');
+                    let message = '';
+                    let className = '';
+                    if (score >= 80) {
+                        message = '🎉 Excellent! Anda lulus dengan nilai sangat baik!';
+                        className = 'success-message';
+                    } else if (score >= 60) {
+                        message = '✅ Good! Anda lulus!';
+                        className = 'success-message';
+                    } else {
+                        message = '❌ Maaf, Anda belum lulus. Silakan coba lagi.';
+                        className = 'error-message';
+                    }
+                    messageEl.textContent = message;
+                    messageEl.className = `result-message fade-in-delay-3 ${className}`;
+                } else {
+                    alert('Gagal memuat hasil ujian');
+                    window.location.href = 'instructions.html';
+                }
+            } catch (error) {
+                console.error('Error loading result:', error);
+                alert('Terjadi kesalahan saat memuat hasil');
+                window.location.href = 'instructions.html';
+            }
+        }
+        
+        function animateScore(targetScore) {
+            let currentScore = 0;
+            const increment = targetScore / 50;
+            const timer = setInterval(() => {
+                currentScore += increment;
+                if (currentScore >= targetScore) {
+                    currentScore = targetScore;
+                    clearInterval(timer);
+                }
+                document.getElementById('scoreDisplay').textContent = Math.round(currentScore);
+            }, 30);
+        }
+        
+        window.addEventListener('DOMContentLoaded', loadResult);
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,265 @@
+/* Web3 Particle Effects for Every Section */
+
+/* Particle Container - Base - Strict Containment */
+.particle-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden !important;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+    clip-path: inset(0 round var(--container-radius, 24px));
+    contain: strict;
+    isolation: isolate;
+    /* Prevent particles from escaping */
+    mask-image: linear-gradient(to bottom, black, black);
+    -webkit-mask-image: linear-gradient(to bottom, black, black);
+}
+
+.particle-container::before,
+.particle-container::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+}
+
+/* Floating Particles */
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(67, 217, 173, 0.3);
+    animation: floatParticle 20s ease-in-out infinite;
+    pointer-events: none;
+    filter: blur(1px);
+}
+
+.particle:nth-child(1) {
+    width: 4px;
+    height: 4px;
+    left: 10%;
+    top: 20%;
+    animation-delay: 0s;
+    background: rgba(67, 217, 173, 0.4);
+}
+
+.particle:nth-child(2) {
+    width: 6px;
+    height: 6px;
+    left: 80%;
+    top: 60%;
+    animation-delay: 2s;
+    background: rgba(77, 91, 206, 0.3);
+}
+
+.particle:nth-child(3) {
+    width: 3px;
+    height: 3px;
+    left: 50%;
+    top: 80%;
+    animation-delay: 4s;
+    background: rgba(255, 107, 157, 0.4);
+}
+
+.particle:nth-child(4) {
+    width: 5px;
+    height: 5px;
+    left: 30%;
+    top: 40%;
+    animation-delay: 6s;
+    background: rgba(255, 168, 107, 0.3);
+}
+
+.particle:nth-child(5) {
+    width: 4px;
+    height: 4px;
+    left: 70%;
+    top: 10%;
+    animation-delay: 8s;
+    background: rgba(67, 217, 173, 0.5);
+}
+
+.particle:nth-child(6) {
+    width: 6px;
+    height: 6px;
+    left: 20%;
+    top: 70%;
+    animation-delay: 10s;
+    background: rgba(77, 91, 206, 0.4);
+}
+
+/* Particle Animation - Constrained to container (max 15px movement) */
+@keyframes floatParticle {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.3;
+    }
+    25% {
+        transform: translate(6px, -10px) scale(1.05);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translate(-5px, -12px) scale(0.95);
+        opacity: 0.4;
+    }
+    75% {
+        transform: translate(8px, -6px) scale(1.02);
+        opacity: 0.7;
+    }
+}
+
+/* Ensure particles stay within container bounds */
+.particle {
+    /* Particles are already positioned via nth-child selectors above */
+    max-width: 8px;
+    max-height: 8px;
+    /* Constrain animation movement to stay within bounds */
+    animation-timing-function: ease-in-out;
+}
+
+/* Glowing Orb Particles - Constrained */
+.orb-particle {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(67, 217, 173, 0.2) 0%, transparent 70%);
+    filter: blur(30px);
+    animation: floatOrb 15s ease-in-out infinite;
+    pointer-events: none;
+    /* Keep within bounds */
+    left: 10%;
+    top: 10%;
+}
+
+.orb-particle:nth-child(1) {
+    top: 5%;
+    left: 5%;
+    animation-delay: 0s;
+    background: radial-gradient(circle, rgba(67, 217, 173, 0.25) 0%, transparent 70%);
+    width: 60px;
+    height: 60px;
+}
+
+.orb-particle:nth-child(2) {
+    top: auto;
+    bottom: 10%;
+    right: 10%;
+    left: auto;
+    animation-delay: 5s;
+    background: radial-gradient(circle, rgba(255, 107, 157, 0.2) 0%, transparent 70%);
+    width: 70px;
+    height: 70px;
+}
+
+.orb-particle:nth-child(3) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: 10s;
+    background: radial-gradient(circle, rgba(77, 91, 206, 0.2) 0%, transparent 70%);
+    width: 50px;
+    height: 50px;
+}
+
+@keyframes floatOrb {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.3;
+    }
+    33% {
+        transform: translate(12px, -15px) scale(1.15);
+        opacity: 0.5;
+    }
+    66% {
+        transform: translate(-8px, 12px) scale(0.95);
+        opacity: 0.4;
+    }
+}
+
+/* Reset transform for nth-child(3) */
+.orb-particle:nth-child(3) {
+    animation: floatOrbCenter 15s ease-in-out infinite;
+}
+
+@keyframes floatOrbCenter {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.3;
+    }
+    33% {
+        transform: translate(-50%, -50%) translate(15px, -15px) scale(1.15);
+        opacity: 0.5;
+    }
+    66% {
+        transform: translate(-50%, -50%) translate(-12px, 15px) scale(0.95);
+        opacity: 0.4;
+    }
+}
+
+/* Energy Lines Animation */
+.energy-line {
+    position: absolute;
+    width: 2px;
+    height: 100px;
+    background: linear-gradient(180deg, transparent 0%, rgba(67, 217, 173, 0.6) 50%, transparent 100%);
+    animation: energyFlow 3s ease-in-out infinite;
+    pointer-events: none;
+    filter: blur(1px);
+}
+
+.energy-line:nth-child(odd) {
+    animation-delay: 0s;
+}
+
+.energy-line:nth-child(even) {
+    animation-delay: 1.5s;
+    background: linear-gradient(180deg, transparent 0%, rgba(255, 107, 157, 0.5) 50%, transparent 100%);
+}
+
+@keyframes energyFlow {
+    0%, 100% {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(100px);
+    }
+}
+
+/* Section Particles Wrapper */
+section,
+.container > *,
+.exam-card,
+.result-card,
+.welcome-card,
+.login-card,
+.instructions-card,
+.question-navigation,
+.question-container {
+    position: relative;
+    overflow: hidden !important;
+}
+
+/* Ensure content is above particles */
+section > *,
+.container > * > *,
+.exam-card > *,
+.result-card > *,
+.question-container > *,
+.question-navigation > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Ensure particles don't escape - additional safety */
+.particle-container * {
+    max-width: 100%;
+    max-height: 100%;
+}
+
